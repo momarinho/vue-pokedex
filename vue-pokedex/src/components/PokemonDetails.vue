@@ -20,7 +20,9 @@ export default {
       this.pokemon = pokemon;
       this.loading = false;
     },
-    // toggleFavorite() {},
+    // toggleFavorite() {
+    //   this.isFavorite = !this.isFavorite;
+    // },
     close() {
       this.$router.back();
     },
@@ -69,7 +71,7 @@ export default {
         </tr>
       </table>
       <div class="btns-container">
-        <button class="favorite-button" :class="{ 'is-favorite': isFavorite }">
+        <button class="favorite-button" @click="toggleFavorite" :class="{ 'is-favorite': isFavorite }">
           {{ isFavorite? "Remove from Favorites": "Add to Favorites" }}
         </button>
         <route-link @click="close">Close</route-link>

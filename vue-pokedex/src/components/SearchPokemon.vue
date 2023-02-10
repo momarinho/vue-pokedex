@@ -4,17 +4,10 @@ export default {
     return {
       searchTerm: "",
       evolutions: [],
-      // pokemons: [],
+      showSearch: true,
     };
   },
   methods: {
-    // async created() {
-    //   const response = await fetch(
-    //     `https://pokeapi.co/api/v2/pokemon?limit=151`
-    //   );
-    //   const data = await response.json();
-    //   this.pokemons = data.results;
-    // },
     async searchPokemon() {
       this.evolutions = [];
       const response = await fetch(
@@ -43,6 +36,7 @@ export default {
       }
     },
     showPokemonDetails(pokemonId) {
+      this.showSearch = false;
       this.$router.push({ name: "PokemonDetails", params: { pokemonId } });
     },
   },
@@ -52,24 +46,45 @@ export default {
 <template>
   <main>
     <div class="container">
-      <div class="main-container">
+      <div class="main-container" v-if="showSearch">
         <div class="search-container">
           <div class="input-container">
-            <input type="text" v-model="searchTerm" placeholder="Digite o nome ou ID do Pokemon..." />
+            <input
+              type="text"
+              v-model="searchTerm"
+              placeholder="Digite o nome ou ID do Pokemon..."
+            />
           </div>
           <div class="btn-con">
-            <button @click="searchPokemon" @submit="searchPokemon" class="searchBtn">Search</button>
+            <button
+              @click="searchPokemon"
+              @submit="searchPokemon"
+              class="searchBtn"
+            >
+              Search
+            </button>
           </div>
         </div>
         <div class="pokemons-container">
-          <div class="pokemon-card" v-for="evolution in evolutions" :key="evolution.id">
+          <div
+            class="pokemon-card"
+            v-for="evolution in evolutions"
+            :key="evolution.id"
+          >
             <div class="card-content">
               <h3 class="card-title">{{ evolution.name }}</h3>
               <div class="card-image">
-                <img :src="evolution.sprites.front_default" alt="Pokemon image" />
+                <img
+                  :src="evolution.sprites.front_default"
+                  alt="Pokemon image"
+                />
               </div>
               <div class="route-con">
-                <router-link @click="showPokemonDetails(evolution.id)" class="card-link" to="/pokemon-details">
+                <router-link
+                  @click="showPokemonDetails(evolution.id)"
+                  class="card-link"
+                  to="/pokemon-details"
+                >
                   Detalhes
                 </router-link>
               </div>
@@ -77,6 +92,7 @@ export default {
           </div>
         </div>
       </div>
+      <router-view v-else></router-view>
     </div>
   </main>
 </template>
