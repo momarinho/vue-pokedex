@@ -32,8 +32,12 @@
         </tr>
       </table>
       <div class="btns-container">
-        <button class="favorite-button" @click="toggleFavorite" :class="{ 'is-favorite': isFavorite }">
-          {{ isFavorite? "Remover dos Favoritos": "Adicionar aos Favoritos" }}
+        <button
+          class="favorite-button"
+          @click="toggleFavorite"
+          :class="{ 'is-favorite': isFavorite }"
+        >
+          {{ isFavorite ? "Remover dos Favoritos" : "Adicionar aos Favoritos" }}
         </button>
         <route-link @click="close">Fechar</route-link>
       </div>
@@ -146,11 +150,31 @@ export default {
   @media (max-width: 767px) {
     h2 {
       font-size: 24px;
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
 
     img {
       width: 150px;
       height: 150px;
+    }
+
+    table {
+      font-size: 14px;
+    }
+
+    .btns-container {
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
+
+      .favorite-button,
+      route-link {
+        margin: 5px;
+        font-size: 14px;
+        padding: 5px 10px;
+      }
     }
   }
 }

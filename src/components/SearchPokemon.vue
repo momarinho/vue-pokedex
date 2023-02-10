@@ -106,10 +106,14 @@ $card-border-radius: 10px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 50vh;
+  height: 80vh;
   margin: 10px;
 
   .search-container {
+    height: 50px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
     margin-bottom: 20px;
     display: flex;
     justify-content: center;
@@ -123,6 +127,11 @@ $card-border-radius: 10px;
       min-width: 100%;
       border-radius: 5px;
       border: 1px solid $primary-color;
+
+      @media (max-width: 767px) {
+        font-size: 16px;
+        padding: 8px 16px;
+      }
     }
 
     .btn-con {
@@ -139,6 +148,11 @@ $card-border-radius: 10px;
 
       &:hover {
         background-color: $secondary-color;
+      }
+
+      @media (max-width: 767px) {
+        font-size: 16px;
+        padding: 8px 16px;
       }
     }
   }
@@ -179,16 +193,35 @@ $card-border-radius: 10px;
 
         .route-con {
           margin-top: 20px;
-        }
-
-        .card-link {
-          color: $primary-color;
+          padding: 10px 20px;
+          background-color: $primary-color;
+          border: none;
+          border-radius: 5px;
           cursor: pointer;
 
           &:hover {
-            text-decoration: underline;
+            background-color: $secondary-color;
           }
         }
+
+        .card-link {
+          cursor: pointer;
+          color: white;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    .pokemons-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      .pokemon-card {
+        width: 200px;
+        margin: 10px;
       }
     }
   }
