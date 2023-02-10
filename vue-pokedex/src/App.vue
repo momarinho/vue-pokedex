@@ -28,9 +28,7 @@ import SearchPokemon from "./components/SearchPokemon.vue";
 <template>
   <div class="wrapper">
     <header>Pokedex</header>
-
     <SearchPokemon />
+    <RouterView />
   </div>
-
-  <RouterView />
 </template>
