@@ -1,50 +1,11 @@
-<script>
-export default {
-  data() {
-    return {
-      pokemon: null,
-      loading: true,
-      // isFavorite: false,
-    };
-  },
-  created() {
-    this.fetchPokemon();
-    // this.checkIfFavorite();
-  },
-  methods: {
-    async fetchPokemon() {
-      const response = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${this.$route.params.pokemonId}`
-      );
-      const pokemon = await response.json();
-      this.pokemon = pokemon;
-      this.loading = false;
-    },
-    // toggleFavorite() {
-    //   this.isFavorite = !this.isFavorite;
-    // },
-    close() {
-      this.$router.back();
-    },
-  },
-};
-</script>
-
 <template>
   <div class="pokemon-details-container">
     <div v-if="loading">Loading...</div>
     <div class="inner-container" v-else>
       <h2>{{ pokemon.name }}</h2>
+      <p>{{ pokemon.id }}</p>
       <img :src="pokemon.sprites.front_default" alt="Pokemon image" />
       <table>
-        <tr>
-          <td>Height</td>
-          <td>{{ pokemon.height }}</td>
-        </tr>
-        <tr>
-          <td>Weight</td>
-          <td>{{ pokemon.weight }}</td>
-        </tr>
         <tr>
           <td>HP</td>
           <td>{{ pokemon.stats[5].base_stat }}</td>
@@ -72,13 +33,41 @@ export default {
       </table>
       <div class="btns-container">
         <button class="favorite-button" @click="toggleFavorite" :class="{ 'is-favorite': isFavorite }">
-          {{ isFavorite? "Remove from Favorites": "Add to Favorites" }}
+          {{ isFavorite? "Remover dos Favoritos": "Adicionar aos Favoritos" }}
         </button>
-        <route-link @click="close">Close</route-link>
+        <route-link @click="close">Fechar</route-link>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      pokemon: null,
+      loading: true,
+    };
+  },
+  created() {
+    this.fetchPokemon();
+  },
+  methods: {
+    async fetchPokemon() {
+      const response = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${this.$route.params.pokemonId}`
+      );
+      const pokemon = await response.json();
+      this.pokemon = pokemon;
+      this.loading = false;
+    },
+
+    close() {
+      this.$router.back();
+    },
+  },
+};
+</script>
 
 <style lang="scss">
 .pokemon-details-container {
@@ -108,7 +97,7 @@ export default {
     img {
       width: 200px;
       height: 200px;
-      margin-bottom: 20px;
+      margin-bottom: 5px;
     }
 
     table {

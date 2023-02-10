@@ -52,17 +52,11 @@ export default {
             <input
               type="text"
               v-model="searchTerm"
-              placeholder="Digite o nome ou ID do Pokemon..."
+              placeholder="Digite o nome ou ID..."
             />
           </div>
           <div class="btn-con">
-            <button
-              @click="searchPokemon"
-              @submit="searchPokemon"
-              class="searchBtn"
-            >
-              Search
-            </button>
+            <button @click="searchPokemon" class="searchBtn">Buscar</button>
           </div>
         </div>
         <div class="pokemons-container">
@@ -73,6 +67,7 @@ export default {
           >
             <div class="card-content">
               <h3 class="card-title">{{ evolution.name }}</h3>
+              <p class="card-title">Id: {{ evolution.id }}</p>
               <div class="card-image">
                 <img
                   :src="evolution.sprites.front_default"
