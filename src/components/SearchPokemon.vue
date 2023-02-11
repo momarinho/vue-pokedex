@@ -10,29 +10,39 @@ export default {
   methods: {
     async searchPokemon() {
       this.evolutions = [];
-      const response = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${this.searchTerm.toLowerCase()}`
-      );
-      const pokemon = await response.json();
-      const evolutionResponse = await fetch(pokemon.species.url);
-      const species = await evolutionResponse.json();
-      const evolutionChain = species.evolution_chain.url;
-      const evolutionChainResponse = await fetch(evolutionChain);
-      const evolutionChainData = await evolutionChainResponse.json();
-      this.getEvolutions(evolutionChainData.chain);
+      try {
+        const response = await fetch(
+          `https://pokeapi.co/api/v2/pokemon/${this.searchTerm.toLowerCase()}`
+        );
+        const pokemon = await response.json();
+        const evolutionResponse = await fetch(pokemon.species.url);
+        const species = await evolutionResponse.json();
+        const evolutionChain = species.evolution_chain.url;
+        const evolutionChainResponse = await fetch(evolutionChain);
+        const evolutionChainData = await evolutionChainResponse.json();
+        this.getEvolutions(evolutionChainData.chain);
+      } catch (error) {
+        console.error(error);
+        alert("Algo deu errado :(");
+      }
     },
     async getEvolutions(evolution) {
-      const evolutionResponse = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${evolution.species.name}`
-      );
-      const evolutionData = await evolutionResponse.json();
-      this.evolutions.push({
-        id: evolutionData.id,
-        name: evolutionData.name,
-        sprites: evolutionData.sprites,
-      });
-      for (const nextEvolution of evolution.evolves_to) {
-        await this.getEvolutions(nextEvolution);
+      try {
+        const evolutionResponse = await fetch(
+          `https://pokeapi.co/api/v2/pokemon/${evolution.species.name}`
+        );
+        const evolutionData = await evolutionResponse.json();
+        this.evolutions.push({
+          id: evolutionData.id,
+          name: evolutionData.name,
+          sprites: evolutionData.sprites,
+        });
+        for (const nextEvolution of evolution.evolves_to) {
+          await this.getEvolutions(nextEvolution);
+        }
+      } catch (error) {
+        console.error(error);
+        alert("Algo deu errado :(");
       }
     },
     showPokemonDetails(pokemonId) {
@@ -49,6 +59,7 @@ export default {
       <div class="main-container" v-if="showSearch">
         <div class="search-container">
           <div class="input-container">
+            <!-- <img src="./assets/pokebola.png" alt="pokebola"/> -->
             <input
               type="text"
               v-model="searchTerm"
@@ -67,7 +78,7 @@ export default {
           >
             <div class="card-content">
               <h3 class="card-title">{{ evolution.name }}</h3>
-              <p class="card-title">Id: {{ evolution.id }}</p>
+              <p class="card-title">ID: {{ evolution.id }}</p>
               <div class="card-image">
                 <img
                   :src="evolution.sprites.front_default"
@@ -106,7 +117,7 @@ $card-border-radius: 10px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 80vh;
+  min-height: 80vh;
   margin: 10px;
 
   .search-container {
@@ -159,12 +170,12 @@ $card-border-radius: 10px;
 
   .pokemons-container {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     justify-content: center;
 
     .pokemon-card {
-      width: $card-width;
-      margin: $card-margin;
+      flex: 1 0 calc(25% - 40px);
+      margin: 20px;
       text-align: center;
       background-color: $card-background-color;
       box-shadow: $card-shadow;
@@ -190,6 +201,14 @@ $card-border-radius: 10px;
 
       .card-content {
         padding: 20px;
+
+        h3 {
+          font-weight: bold;
+        }
+
+        p {
+          font-size: medium;
+        }
 
         .route-con {
           margin-top: 20px;

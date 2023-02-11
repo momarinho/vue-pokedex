@@ -3,7 +3,7 @@
     <div v-if="loading">Loading...</div>
     <div class="inner-container" v-else>
       <h2>{{ pokemon.name }}</h2>
-      <p>{{ pokemon.id }}</p>
+      <p>ID: {{ pokemon.id }}</p>
       <img :src="pokemon.sprites.front_default" alt="Pokemon image" />
       <table>
         <tr>
@@ -11,33 +11,30 @@
           <td>{{ pokemon.stats[5].base_stat }}</td>
         </tr>
         <tr>
-          <td>Attack</td>
+          <td>Ataque</td>
           <td>{{ pokemon.stats[4].base_stat }}</td>
         </tr>
         <tr>
-          <td>Defense</td>
+          <td>Defesa</td>
           <td>{{ pokemon.stats[3].base_stat }}</td>
         </tr>
         <tr>
-          <td>Special Attack</td>
+          <td>Ataque Especial</td>
           <td>{{ pokemon.stats[2].base_stat }}</td>
         </tr>
         <tr>
-          <td>Special Defense</td>
+          <td>Defesa Especial</td>
           <td>{{ pokemon.stats[1].base_stat }}</td>
         </tr>
         <tr>
-          <td>Speed</td>
-          <td>{{ pokemon.stats[0].base_stat }}</td>
+          <td>Velocidade</td>
+          <th>{{ pokemon.stats[0].base_stat }}</th>
         </tr>
       </table>
       <div class="btns-container">
-        <button
-          class="favorite-button"
-          @click="toggleFavorite"
-          :class="{ 'is-favorite': isFavorite }"
-        >
-          {{ isFavorite ? "Remover dos Favoritos" : "Adicionar aos Favoritos" }}
+        <button class="favorite-button" :class="{ 'is-favorite': isFavorite }" @click="toggleFavorite">
+          <span v-if="isFavorite">Remover dos Favoritos</span>
+          <span v-else>Adicionar aos Favoritos</span>
         </button>
         <route-link @click="close">Fechar</route-link>
       </div>
@@ -126,7 +123,7 @@ export default {
         cursor: pointer;
         margin: 5px;
 
-        &.is-favorite {
+        is-favorite {
           background-color: #f44336;
         }
       }
