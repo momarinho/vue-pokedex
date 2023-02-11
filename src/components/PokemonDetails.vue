@@ -1,6 +1,6 @@
 <script>
 export default {
-  data() {
+   data() {
     return {
       pokemon: null,
       loading: true,
@@ -10,17 +10,66 @@ export default {
     this.fetchPokemon();
   },
   methods: {
+    //receber dados
     async fetchPokemon() {
-      const response = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${this.$route.params.pokemonId}`
-      );
-      const pokemon = await response.json();
-      this.pokemon = pokemon;
-      this.loading = false;
+      try {
+        const response = await fetch(
+          `https://pokeapi.co/api/v2/pokemon/${this.$route.params.pokemonId}`
+        );
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        const pokemon = await response.json();
+        this.pokemon = pokemon;
+      } catch (error) {
+        console.error(error);
+        this.pokemon = null;
+      } finally {
+        this.loading = false;
+      }
     },
-
+    //retornar a pg de pesquisa
     close() {
       this.$router.push({ name: "SearchPokemon" });
+    },
+  },
+  //status
+  computed: {
+    hp() {
+      return this.pokemon
+        ? this.pokemon.stats.find((stat) => stat.stat.name === "hp").base_stat
+        : 0;
+    },
+    attack() {
+      return this.pokemon
+        ? this.pokemon.stats.find((stat) => stat.stat.name === "attack")
+            .base_stat
+        : 0;
+    },
+    defense() {
+      return this.pokemon
+        ? this.pokemon.stats.find((stat) => stat.stat.name === "defense")
+            .base_stat
+        : 0;
+    },
+    specialAttack() {
+      return this.pokemon
+        ? this.pokemon.stats.find((stat) => stat.stat.name === "special-attack")
+            .base_stat
+        : 0;
+    },
+    specialDefense() {
+      return this.pokemon
+        ? this.pokemon.stats.find(
+            (stat) => stat.stat.name === "special-defense"
+          ).base_stat
+        : 0;
+    },
+    speed() {
+      return this.pokemon
+        ? this.pokemon.stats.find((stat) => stat.stat.name === "speed")
+            .base_stat
+        : 0;
     },
   },
 };
@@ -28,7 +77,7 @@ export default {
 
 <template>
   <div class="pokemon-details-container">
-    <div v-if="loading">Loading...</div>
+    <p v-if="loading">Loading...</p>
     <div class="inner-container" v-else>
       <h2>{{ pokemon.name }}</h2>
       <p>ID: {{ pokemon.id }}</p>
@@ -42,35 +91,31 @@ export default {
       <table>
         <tr>
           <td>HP</td>
-          <th>{{ pokemon.stats[5].base_stat }}</th>
+          <th>{{ hp }}</th>
         </tr>
         <tr>
           <td>Ataque</td>
-          <th>{{ pokemon.stats[4].base_stat }}</th>
+          <th>{{ attack }}</th>
         </tr>
         <tr>
           <td>Defesa</td>
-          <th>{{ pokemon.stats[3].base_stat }}</th>
+          <th>{{ defense }}</th>
         </tr>
         <tr>
           <td>Ataque Especial</td>
-          <th>{{ pokemon.stats[2].base_stat }}</th>
+          <th>{{ specialAttack }}</th>
         </tr>
         <tr>
           <td>Defesa Especial</td>
-          <th>{{ pokemon.stats[1].base_stat }}</th>
+          <th>{{ specialDefense }}</th>
         </tr>
         <tr>
           <td>Velocidade</td>
-          <th>{{ pokemon.stats[0].base_stat }}</th>
+          <th>{{ speed }}</th>
         </tr>
       </table>
       <div class="btns-container">
-        <button
-          class="favorite-button"
-          :class="{ 'is-favorite': isFavorite }"
-          @click="toggleFavorite"
-        >
+        <button class="favorite-button" :class="{ 'is-favorite': isFavorite }">
           <span v-if="isFavorite">Remover dos Favoritos</span>
           <span v-else>Adicionar aos Favoritos</span>
         </button>
@@ -101,7 +146,11 @@ export default {
       text-align: center;
       font-size: 36px;
       font-weight: bolder;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
+      text-transform: capitalize;
+    }
+
+    span {
       text-transform: capitalize;
     }
 
