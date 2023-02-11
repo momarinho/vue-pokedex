@@ -1,47 +1,3 @@
-<template>
-  <div class="pokemon-details-container">
-    <div v-if="loading">Loading...</div>
-    <div class="inner-container" v-else>
-      <h2>{{ pokemon.name }}</h2>
-      <p>ID: {{ pokemon.id }}</p>
-      <img :src="pokemon.sprites.front_default" alt="Pokemon image" />
-      <table>
-        <tr>
-          <td>HP</td>
-          <td>{{ pokemon.stats[5].base_stat }}</td>
-        </tr>
-        <tr>
-          <td>Ataque</td>
-          <td>{{ pokemon.stats[4].base_stat }}</td>
-        </tr>
-        <tr>
-          <td>Defesa</td>
-          <td>{{ pokemon.stats[3].base_stat }}</td>
-        </tr>
-        <tr>
-          <td>Ataque Especial</td>
-          <td>{{ pokemon.stats[2].base_stat }}</td>
-        </tr>
-        <tr>
-          <td>Defesa Especial</td>
-          <td>{{ pokemon.stats[1].base_stat }}</td>
-        </tr>
-        <tr>
-          <td>Velocidade</td>
-          <th>{{ pokemon.stats[0].base_stat }}</th>
-        </tr>
-      </table>
-      <div class="btns-container">
-        <button class="favorite-button" :class="{ 'is-favorite': isFavorite }" @click="toggleFavorite">
-          <span v-if="isFavorite">Remover dos Favoritos</span>
-          <span v-else>Adicionar aos Favoritos</span>
-        </button>
-        <route-link @click="close">Fechar</route-link>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script>
 export default {
   data() {
@@ -64,11 +20,65 @@ export default {
     },
 
     close() {
-      this.$router.back();
+      this.$router.push({ name: "SearchPokemon" });
     },
   },
 };
 </script>
+
+<template>
+  <div class="pokemon-details-container">
+    <div v-if="loading">Loading...</div>
+    <div class="inner-container" v-else>
+      <h2>{{ pokemon.name }}</h2>
+      <p>ID: {{ pokemon.id }}</p>
+      <p>
+        Type:
+        <span v-for="type in pokemon.types" :key="type.type.name">{{
+          type.type.name
+        }}</span>
+      </p>
+      <img :src="pokemon.sprites.front_default" alt="Pokemon image" />
+      <table>
+        <tr>
+          <td>HP</td>
+          <th>{{ pokemon.stats[5].base_stat }}</th>
+        </tr>
+        <tr>
+          <td>Ataque</td>
+          <th>{{ pokemon.stats[4].base_stat }}</th>
+        </tr>
+        <tr>
+          <td>Defesa</td>
+          <th>{{ pokemon.stats[3].base_stat }}</th>
+        </tr>
+        <tr>
+          <td>Ataque Especial</td>
+          <th>{{ pokemon.stats[2].base_stat }}</th>
+        </tr>
+        <tr>
+          <td>Defesa Especial</td>
+          <th>{{ pokemon.stats[1].base_stat }}</th>
+        </tr>
+        <tr>
+          <td>Velocidade</td>
+          <th>{{ pokemon.stats[0].base_stat }}</th>
+        </tr>
+      </table>
+      <div class="btns-container">
+        <button
+          class="favorite-button"
+          :class="{ 'is-favorite': isFavorite }"
+          @click="toggleFavorite"
+        >
+          <span v-if="isFavorite">Remover dos Favoritos</span>
+          <span v-else>Adicionar aos Favoritos</span>
+        </button>
+        <route-link @click="close">Fechar</route-link>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style lang="scss">
 .pokemon-details-container {
@@ -96,17 +106,26 @@ export default {
     }
 
     img {
-      width: 200px;
-      height: 200px;
+      width: 100px;
+      height: 100px;
       margin-bottom: 5px;
     }
 
     table {
       margin-bottom: 20px;
+      width: 80%;
 
       th,
       td {
         padding: 10px;
+        text-align: start;
+        background-color: #fff;
+      }
+
+      th {
+        background-color: #ddd;
+        font-weight: bold;
+        text-align: center;
       }
     }
 

@@ -8,6 +8,7 @@ export default {
     };
   },
   methods: {
+    //retorna o pokemon pesquisado
     async searchPokemon() {
       this.evolutions = [];
       try {
@@ -26,6 +27,7 @@ export default {
         alert("Algo deu errado :(");
       }
     },
+    //evoluções
     async getEvolutions(evolution) {
       try {
         const evolutionResponse = await fetch(
@@ -49,6 +51,10 @@ export default {
       this.showSearch = false;
       this.$router.push({ name: "PokemonDetails", params: { pokemonId } });
     },
+    favorites() {
+      this.showSearch = false;
+      this.$router.push({ name: "PokemonFavorites" });
+    },
   },
 };
 </script>
@@ -57,9 +63,9 @@ export default {
   <main>
     <div class="container">
       <div class="main-container" v-if="showSearch">
+        <h1 class="title">POKEDEX</h1>
         <div class="search-container">
           <div class="input-container">
-            <!-- <img src="./assets/pokebola.png" alt="pokebola"/> -->
             <input
               type="text"
               v-model="searchTerm"
@@ -69,6 +75,7 @@ export default {
           <div class="btn-con">
             <button @click="searchPokemon" class="searchBtn">Buscar</button>
           </div>
+          <!-- <router-link class="favorites-link">Favorites</router-link> -->
         </div>
         <div class="pokemons-container">
           <div
@@ -104,6 +111,12 @@ export default {
 </template>
 
 <style lang="scss">
+@font-face {
+  font-family: "Press Start 2P";
+  src: url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap")
+    format("truetype");
+}
+
 $primary-color: #4caf50;
 $secondary-color: #3e8e41;
 $card-width: 200px;
@@ -119,6 +132,12 @@ $card-border-radius: 10px;
   justify-content: center;
   min-height: 80vh;
   margin: 10px;
+
+  .title {
+    font-family: "Press Start 2P";
+    font-size: 40px;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+  }
 
   .search-container {
     height: 50px;
@@ -239,7 +258,7 @@ $card-border-radius: 10px;
       justify-content: center;
 
       .pokemon-card {
-        width: 200px;
+        width: 150px;
         margin: 10px;
       }
     }
